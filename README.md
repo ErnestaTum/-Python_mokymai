@@ -1,1 +1,1 @@
-# -Python_mokymai
+# Python_mokymai
