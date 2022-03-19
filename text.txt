@@ -1,3 +1,0 @@
-testinis dokumentas
-
-Hello world
