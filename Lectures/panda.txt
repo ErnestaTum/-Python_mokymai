@@ -1,0 +1,112 @@
+eviews = pd.read_csv('winemag-data.csv', index_col = 0)
+reviews.head(2)
+
+wine_df_clean.to_csv("wine_cleaned.csv")
+
+print(len(pd.unique(reviews['variety'])))
+
+reviews["variety"].value_counts().idxmax()
+
+https://stackoverflow.com/questions/19798153/difference-between-map-applymap-and-apply-methods-in-pandas
+
+print(wine_df['country'][0]) - reiksme viena parodo
+len(wine_df['description'][0].split())
+
+tmp_df = wine_df.set_index('province')
+tmp_df = tmp_df.reset_index()
+sorted_countries_df = wine_df.set_index('country').sort_index(level='country') # country rodo kaip indekso stulpeli #surikiavom pagal ABC salis
+df.rename (index = {1: "first", 2:"second"})
+df=df.rename(columns = {"taster_name": "Tester"}) #rename
+
+sorted_wine_df = wine_df.sort_index(level=0, ascending=False)
+sorted_wine_df.iloc[0]
+
+sorted_wine_df.iloc[0::10000] # su .loc neveikia
+sorted_wine_df.loc[[0, 135, 10000]] # tik nurodytus isfiltruoja
+sorted_countries_df.loc['Argentina']
+
+sorted_wine_df.loc[[5,44], ["points", "price"] ] #atsifiltruojam salis ir tada kas is ju norim kad rodytu,
+                             # eiluciu indeksai, columns
+
+sorted_wine_df.loc[0] #gives row with index 0
+# sorted_wine_df.iloc[0] first row in the table
+
+
+wine_df[wine_df['taster_name'] == 'Roger Voss'] #atfilruoja visur roger voss
+
+#kai filtiuojam pagal kelias reiksmes
+wine_df[ (wine_df['country'] == 'Italy') & (wine_df['taster_name'] == 'Roger Voss') ]
+
+wine_df[wine_df['country'].isin ( ["Italy", "France"]) & (wine_df["price"] < 6)]
+
+wine_df[ wine_df['country'].isin( ['Italy', 'France'] ) & ( ( wine_df['price'] < 6 ) | (~wine_df['price'].notna()) ) ]
+
+rw = reviews[reviews['country'].isin(["Australia","New Zealand"]) & (reviews["points"] >= 95) ]
+rw[["title", "price"]]
+
+## Specifiniai operatoriai
+
+# & ~ and . & bitwise and
+# | ~ or .| bitwise or
+# ~ means NOT
+# .isin()
+
+wine_df["naujas_stulpelis"] = wine_df ["price"] *wine_df["points"] / 100
+
+wine_df["description_length"] = wine_df["description"].map(len) #map leidzia fja kita naudoti
+
+
+def words_count(txt):
+    return len(txt.split())
+wine_df["description_world"] = wine_df["description"].map(words_count) 
+
+
+def my_function(row):
+    return str(row["country"]) + " " + str(row["province"])
+wine_df["place"] = wine_df.apply(my_function, axis = 1)
+
+
+wine_df.drop_duplicates() # pasalina dublicatus, pati neperraso funkcijos
+
+wine_df_clean [wine_df_clean["price"].isnull()].shape
+
+wine_df_clean.dropna(how = "any", subset=["price", 'province'])  # drop rows in NaN in price, province columns #neperraso , todel reikia 
+wine_df_clean = wine_df_clean.dropna(how = "any", subset=["price", 'province'])
+
+#groupby - sugrupuoti duomenis pagal faktoriu
+grouped = wine_df_clean.groupby ( ['country', 'province'])[['points', 'price']].mean() #reikia nurodyti kaip grupuoti vertes - skaicius
+
+df["price"].dtype
+
+df["points"].astype('float64')#duomenu nepakeicia lentelej
+df["points"]=df["points"].astype('float64') #dabar pasikeicia
+
+
+df[df["region_2"].isna()] #kiek yra tusciu suzinom
+
+df["region_2"].fillna('Not specified') #uzpildom tuscias vietas, reikia perrasyti jei norime issaugoti
+df["region_2"]= df["region_2"].fillna('Not specified') - perraso
+
+df["taster_twitter_handle"].replace("@vossroger", '@me')
+
+
+ca_videos = pd.read_csv('CAvideos.csv')
+print(ca_videos.shape)
+ca_videos.head(2)
+
+#sujungimas lenteliu
+pd.concat( [gb_videos, ca_videos])
+
+# join
+ca_videos.join( gb_videos, lsuffix = '_left', rsuffix = '_right')
+
+df_1.join(df_2.set_index('key'), on='key', lsuffix='_l', rsuffix='_r') # sujungiam per index k 
+df_1.join(df_2.set_index('key'), on='key', how='inner', lsuffix='_l', rsuffix='_r') #palieka tik kur abu reikmes turi
+#merge - ta pati kaip ir join, tik join - left dazniausiai, o merge - inner join
+df_1.merge(df_2, on='key', how='left', suffixes=('_left', '_right' ) )
+
+df.sort_values(by=['col1', 'col2'])
+
+grouped.loc[ ( slice(None) , True ), : ] #[  ( index_1 value, index_2 value), columns] slice(None) - visi duomenys index1
+grouped.loc[ ( "ABC News (Australia)" , True ):, : ] #[  (  nuo ABC kanalu, kur reikmes True, ir tada viska iki galo
+grouped.loc[ ( 'BeatFilms', True ):('Game Of Thrones', True), : ]  #slicina nuo value iki value
